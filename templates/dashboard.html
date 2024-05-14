@@ -1,0 +1,88 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Sign Recognition for Autonomous Vehicles</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://www.wallpaperflare.com/static/405/614/520/cityscape-traffic-lights-traffic-signs-gray-wallpaper-preview.jpg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative; /* Set position to relative */
+        }
+        .container {
+            padding: 30px;
+            background-color: transparent;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .heading {
+            position: absolute; /* Position the heading absolutely */
+            top: 0; /* Align at the top */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+            width: 100%; /* Full width */
+            margin-top: 20px; /* Add some top margin */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+        }
+        .marquee h1 {
+            display: inline-block;
+            margin: 0;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <h1><marquee>Traffic Sign Recognition for Autonomous Vehicles</marquee></h1>
+    </div>
+    <div class="container">
+        <div class="marquee">
+            <button class="button" id="runTestBtn">Open / Detect</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('runTestBtn').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/run-test', true);
+            xhr.send();
+        });
+    </script>
+</body>
+</html>

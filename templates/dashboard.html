@@ -1,4 +1,3 @@
-<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +60,7 @@
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
+            margin: 10px; /* Add some margin between buttons */
         }
         .button:hover {
             background-color: #0056b3;
@@ -74,6 +74,7 @@
     <div class="container">
         <div class="marquee">
             <button class="button" id="runTestBtn">Open / Detect</button>
+            <a href="{{ url_for('traffic_signs') }}" class="button">Traffic Signs</a>
         </div>
     </div>
 

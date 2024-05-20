@@ -2,12 +2,13 @@ import numpy as np
 import cv2
 import pickle
 from flask import Flask
+import pandas as pd
 
 app = Flask(__name__)
 
 #############################################
 
-frameWidth= 640         # CAMERA RESOLUTION
+frameWidth = 640         # CAMERA RESOLUTION
 frameHeight = 480
 brightness = 180
 threshold = 0.75         # PROBABILITY THRESHOLD
@@ -18,6 +19,9 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 # IMPORT THE TRAINED MODEL
 pickle_in = open("model_trained.p", "rb")
 model = pickle.load(pickle_in)
+
+# Load class names from CSV
+class_names = pd.read_csv('labels.csv', index_col=0).iloc[:, 0].to_dict()
 
 def grayscale(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -34,8 +38,7 @@ def preprocessing(img):
     return img
 
 def getClassName(classNo):
-    # Your class names here...
-    return "Class " + str(classNo)
+    return class_names.get(classNo, "Unknown")
 
 # Function to start camera and prediction loop
 def start_detection():
@@ -60,11 +63,12 @@ def start_detection():
 
         # PREDICT IMAGE
         predictions = model.predict(img)
-        classIndex = np.argmax(predictions, axis=-1)
+        classIndex = np.argmax(predictions, axis=-1)[0]
         probabilityValue = np.amax(predictions)
         if probabilityValue > threshold:
-            cv2.putText(imgOrignal, str(classIndex) + " " + str(getClassName(classIndex)), (120, 35), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
-            cv2.putText(imgOrignal, str(round(probabilityValue*100, 2)) + "%", (180, 75), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
+            className = getClassName(classIndex)
+            cv2.putText(imgOrignal, f"{classIndex} {className}", (120, 35), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(imgOrignal, f"{round(probabilityValue*100, 2)}%", (180, 75), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
         cv2.imshow("Result", imgOrignal)
 
         # Exit the loop if 'q' is pressed

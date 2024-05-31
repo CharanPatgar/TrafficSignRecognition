@@ -97,7 +97,7 @@
         {% endfor %}
     </div>
     <div class="lightbox" id="lightbox" onclick="hideImage()">
-        <div class="lightbox-content">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
             <img src="" id="lightbox-image">
             <p id="lightbox-name"></p>
         </div>
@@ -109,20 +109,21 @@
             document.getElementById('lightbox-image').src = imageSrc;
             document.getElementById('lightbox-name').innerText = imageName;
             document.getElementById('lightbox').style.display = 'block';
+            document.getElementById('lightbox-name').style.display = 'block'; // Ensure the name is displayed
         }
 
         function hideImage() {
             document.getElementById('lightbox').style.display = 'none';
         }
+
         document.addEventListener('DOMContentLoaded', function() {
             var lightbox = document.getElementById('lightbox');
             var lightboxName = document.getElementById('lightbox-name');
         
             lightbox.addEventListener('click', function() {
-                lightboxName.style.display = lightboxName.style.display === 'none' ? 'block' : 'none';
+                lightbox.style.display = 'none';
             });
         });
-        
     </script>
 </body>
 </html>

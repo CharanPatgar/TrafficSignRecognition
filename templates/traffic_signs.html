@@ -9,12 +9,20 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
             color: #343a40;
-            padding: 20px;
+            
+        }
+        h1 {
+            text-align: center;
+            color: #dc3545; /* Changed color */
+            font-size: 36px; /* Increased font size */
+            font-family: 'Arial Black', Gadget, sans-serif; /* Changed font */
+            margin-bottom: 20px;
         }
         .traffic-sign-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 20px;
         }
         .traffic-sign {
             margin: 10px;
@@ -23,14 +31,19 @@
             transition: transform 0.3s;
         }
         .traffic-sign img {
-            width: 100px; /* Fixed width */
-            height: 100px; /* Fixed height */
+            width: 100px;
+            height: 100px;
             display: block;
             margin: 0 auto;
-            transition: transform 0.3s;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: transform 0.3s, border-color 0.3s;
         }
         .traffic-sign:hover {
             transform: scale(1.1);
+        }
+        .traffic-sign img:hover {
+            border-color: #007bff;
         }
         .lightbox {
             display: none;
@@ -56,7 +69,10 @@
         }
         .lightbox p {
             margin: 0;
-            font-family: Arial, sans-serif; /* Change font family here */
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
         .back-button {
             display: inline-block;
@@ -69,21 +85,16 @@
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            text-align: center;
+            margin-top: 30px;
         }
         .back-button:hover {
             background-color: #0056b3;
         }
-        .lightbox p {
-            margin: 0;
-            font-family: Arial, sans-serif; /* Change font family here */
-            font-size: 24px; /* Larger font size */
-            color: #fff; /* White text color */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Text shadow for emphasis */
+        .back-button-container {
+            display: flex;
+            justify-content: center;
         }
-        
     </style>
 </head>
 <body>
@@ -92,7 +103,6 @@
         {% for sign in traffic_signs %}
         <div class="traffic-sign" onclick="showImage('{{ url_for('static', filename=sign.image) }}', '{{ sign.name }}')">
             <img src="{{ url_for('static', filename=sign.image) }}" alt="{{ sign.name }}">
-            
         </div>
         {% endfor %}
     </div>
@@ -102,14 +112,16 @@
             <p id="lightbox-name"></p>
         </div>
     </div>
-    <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
+    <div class="back-button-container">
+        <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
+    </div>
 
     <script>
         function showImage(imageSrc, imageName) {
             document.getElementById('lightbox-image').src = imageSrc;
             document.getElementById('lightbox-name').innerText = imageName;
             document.getElementById('lightbox').style.display = 'block';
-            document.getElementById('lightbox-name').style.display = 'block'; // Ensure the name is displayed
+            document.getElementById('lightbox-name').style.display = 'block';
         }
 
         function hideImage() {

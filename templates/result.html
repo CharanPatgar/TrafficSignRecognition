@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-image: url('https://www.wallpaperflare.com/static/405/614/520/cityscape-traffic-lights-traffic-signs-gray-wallpaper-preview.jpg');
             background-size: cover;
             background-repeat: no-repeat;
@@ -15,74 +16,104 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
+            position: relative;
+        }
+        .title-container {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .title-container h1 {
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            font-size: 2.5em;
+            color: #ffcc00;
         }
         .container {
             padding: 40px;
-            
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             text-align: center;
-        }
-        h1 {
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            max-width: 500px;
+            width: 100%;
         }
         p {
-            font-size: 18px;
+            font-size: 22px;
             margin: 10px 0;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .button-container a {
+            display: block;
+            margin: 10px 0;
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
         .upload-another {
-            display: block;
-            margin: 20px auto;
-            padding: 12px 24px;
-            font-size: 18px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
+            background-color: #28a745;
         }
         .upload-another:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
         .back-button {
-            display: inline-block;
-            padding: 12px 24px;
-            font-size: 18px;
-            cursor: pointer;
             background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            margin-top: 20px;
         }
         .back-button:hover {
             background-color: #0056b3;
         }
-        .back-button-container {
-            display: flex;
-            justify-content: center;
+        @keyframes wordAppear {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .animated-word {
+            display: inline-block;
+            opacity: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="title-container">
         <h1>File uploaded successfully!</h1>
-        <p>Class: <span id="class-name">{{ class_name }}</span></p>
-        
+    </div>
+    <div class="container">
+        <p>Detected Traffic Sign : <span id="class-name">{{ class_name }}</span></p>
+    </div>
+    <div class="button-container">
         <a href="{{ url_for('upload_images') }}" class="upload-another">Upload another image</a>
-        <div class="back-button-container">
-            <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
-        </div>
+        <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
     </div>
     <script>
+        // Function to split text into words and apply animation
+        function animateText(element, text) {
+            const words = text.split(' ');
+            element.innerHTML = '';
+            words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.textContent = word;
+                span.className = 'animated-word';
+                span.style.animation = `wordAppear 0.5s ease forwards ${index * 0.5}s`;
+                element.appendChild(span);
+                element.appendChild(document.createTextNode(' '));
+            });
+        }
+
         // Function to speak the class name
         function speak(text) {
             var synth = window.speechSynthesis;
@@ -92,8 +123,10 @@
 
         // When the page loads, read out the detected class name
         document.addEventListener('DOMContentLoaded', function() {
-            var className = document.getElementById('class-name').textContent;
-            speak('Detected class: ' + className);
+            var className = "{{ class_name }}"; // Assuming the class name is passed from the backend
+            var classNameElement = document.getElementById('class-name');
+            animateText(classNameElement, className);
+            speak('Detected Traffic Sign: ' + className);
         });
     </script>
 </body>

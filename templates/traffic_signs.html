@@ -4,47 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traffic Signs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="title">Traffic Signs Gallery</h1>
+
+    <div class="gallery">
+        <div class="grid">
+            <!-- Loop through traffic signs -->
+            {% for sign in traffic_signs %}
+            <div class="item" onclick="showImage('{{ url_for('static', filename=sign.image) }}', '{{ sign.name }}')">
+                <img src="{{ url_for('static', filename=sign.image) }}" alt="{{ sign.name }}">
+                <div class="item-overlay">
+                    <span class="item-name">{{ sign.name }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Lightbox/Modal -->
+    <div class="lightbox" id="lightbox" onclick="hideImage()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img src="" id="lightbox-image" alt="Lightbox Image">
+            <p id="lightbox-name"></p>
+        </div>
+    </div>
+
+    <div class="back-button-container">
+        <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
+    </div>
+
+    <script>
+        function showImage(imageSrc, imageName) {
+            document.getElementById('lightbox-image').src = imageSrc;
+            document.getElementById('lightbox-name').innerText = imageName;
+            document.getElementById('lightbox').style.display = 'block';
+        }
+
+        function hideImage() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
             color: #343a40;
-            
+            margin: 0;
+            padding: 0;
         }
-        h1 {
+        
+        .title {
             text-align: center;
             color: #dc3545; /* Changed color */
             font-size: 36px; /* Increased font size */
             font-family: 'Arial Black', Gadget, sans-serif; /* Changed font */
             margin-bottom: 20px;
         }
-        .traffic-sign-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        
+        .gallery {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Adjusted minmax for smaller images */
             gap: 20px;
         }
-        .traffic-sign {
-            margin: 10px;
-            text-align: center;
+        
+        .item {
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .traffic-sign img {
-            width: 100px;
-            height: 100px;
-            display: block;
-            margin: 0 auto;
-            border: 2px solid #ddd;
+            border: 2px solid #ddd; /* Default border color */
             border-radius: 10px;
-            transition: transform 0.3s, border-color 0.3s;
         }
-        .traffic-sign:hover {
+        
+        .item:hover {
+            border-color: #007bff; /* Border color on hover */
+        }
+        
+        .item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s;
+            border-radius: 10px;
+        }
+        
+        .item:hover img {
             transform: scale(1.1);
+            border-color: #007bff; /* Border color on hover */
         }
-        .traffic-sign img:hover {
-            border-color: #007bff;
+        
+        .item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
+        
+        .item:hover .item-overlay {
+            opacity: 1;
+        }
+        
+        .item-name {
+            font-size: 14px; /* Adjusted font size */
+            text-align: center;
+        }
+        
         .lightbox {
             display: none;
             position: fixed;
@@ -54,26 +133,35 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 999;
+            text-align: center;
         }
+        
         .lightbox-content {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
         }
+        
         .lightbox img {
             max-width: 80%;
             max-height: 80%;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+        
         .lightbox p {
-            margin: 0;
-            font-family: Arial, sans-serif;
+            margin-top: 20px;
             font-size: 24px;
             color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
+        
+        .back-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
         .back-button {
             display: inline-block;
             padding: 10px 20px;
@@ -85,57 +173,12 @@
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
-            text-align: center;
-            margin-top: 30px;
         }
+        
         .back-button:hover {
             background-color: #0056b3;
         }
-        .back-button-container {
-            display: flex;
-            justify-content: center;
-        }
-    </style>
-</head>
-<body>
-    <h1>Traffic Signs</h1>
-    <div class="traffic-sign-container">
-        {% for sign in traffic_signs %}
-        <div class="traffic-sign" onclick="showImage('{{ url_for('static', filename=sign.image) }}', '{{ sign.name }}')">
-            <img src="{{ url_for('static', filename=sign.image) }}" alt="{{ sign.name }}">
-        </div>
-        {% endfor %}
-    </div>
-    <div class="lightbox" id="lightbox" onclick="hideImage()">
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <img src="" id="lightbox-image">
-            <p id="lightbox-name"></p>
-        </div>
-    </div>
-    <div class="back-button-container">
-        <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a>
-    </div>
-
-    <script>
-        function showImage(imageSrc, imageName) {
-            document.getElementById('lightbox-image').src = imageSrc;
-            document.getElementById('lightbox-name').innerText = imageName;
-            document.getElementById('lightbox').style.display = 'block';
-            document.getElementById('lightbox-name').style.display = 'block';
-        }
-
-        function hideImage() {
-            document.getElementById('lightbox').style.display = 'none';
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var lightbox = document.getElementById('lightbox');
-            var lightboxName = document.getElementById('lightbox-name');
         
-            lightbox.addEventListener('click', function() {
-                lightbox.style.display = 'none';
-            });
-        });
-    </script>
+    </style>
 </body>
 </html>

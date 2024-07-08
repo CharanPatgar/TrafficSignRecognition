@@ -47,11 +47,13 @@ def authenticate():
     if username in users and users[username] == password:
         return redirect(url_for('dashboard'))
     else:
-        return "Invalid credentials. Please try again."
+        error_message = 'Invalid credentials. Please try again.'
+        return render_template('login.html', error=error_message)
 
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+    
 
 @app.route('/logout')
 def logout():

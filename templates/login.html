@@ -50,6 +50,11 @@
 <body>
     <form action="/authenticate" method="post" autocomplete="off">
         <h2>Login</h2>
+        {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+        {% endif %}
         <input type="text" name="username" placeholder="Username" required autocomplete="new-username"><br>
         <input type="password" name="password" placeholder="Password" required autocomplete="new-password"><br>
         <input type="submit" value="Login">

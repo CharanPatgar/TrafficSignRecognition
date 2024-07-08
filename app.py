@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import subprocess
+import json
 import os
 import pandas as pd
 from werkzeug.utils import secure_filename
@@ -9,11 +10,20 @@ import pickle
 
 app = Flask(__name__)
 
-# Dummy user data for login
-users = {
-    "user1": "password1",
-    "user2": "password2"
-}
+# Dummy user data for login and registration
+USER_DATA_FILE = 'users.json'
+
+def load_users():
+    if os.path.exists(USER_DATA_FILE):
+        with open(USER_DATA_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_users(users):
+    with open(USER_DATA_FILE, 'w') as f:
+        json.dump(users, f)
+
+users = load_users()
 
 # Load class names from CSV
 class_names = pd.read_csv('labels.csv', index_col=0).iloc[:, 0].to_dict()
@@ -43,12 +53,29 @@ def login():
 def authenticate():
     username = request.form['username']
     password = request.form['password']
-
+    users = load_users()
     if username in users and users[username] == password:
         return redirect(url_for('dashboard'))
     else:
         error_message = 'Invalid credentials. Please try again.'
         return render_template('login.html', error=error_message)
+    
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        users = load_users()
+        if username in users:
+            error_message = 'Username already exists. Please try another one.'
+            return render_template('register.html', error=error_message)
+        else:
+            users[username] = password
+            save_users(users)
+            # Reload users to ensure the latest data is available
+            users = load_users()
+            return redirect(url_for('login'))
+    return render_template('register.html', error=None)
 
 @app.route('/dashboard')
 def dashboard():

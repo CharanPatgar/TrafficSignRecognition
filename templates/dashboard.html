@@ -76,6 +76,7 @@
             <button class="button" id="runTestBtn">Open / Detect</button>
             <a href="{{ url_for('traffic_signs') }}" class="button">Traffic Signs</a>
             <a href="{{ url_for('upload_images') }}" class="button">Upload Images</a>
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
         </div>
     </div>
 
@@ -84,6 +85,12 @@
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/run-test', true);
             xhr.send();
+        });
+
+        // Clear form fields if they are prefilled
+        window.addEventListener('load', function() {
+            document.querySelector('input[name="username"]').value = '';
+            document.querySelector('input[name="password"]').value = '';
         });
     </script>
 </body>

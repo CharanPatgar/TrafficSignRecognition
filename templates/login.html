@@ -48,10 +48,10 @@
     </style>
 </head>
 <body>
-    <form action="/authenticate" method="post">
+    <form action="/authenticate" method="post" autocomplete="off">
         <h2>Login</h2>
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="text" name="username" placeholder="Username" required autocomplete="new-username"><br>
+        <input type="password" name="password" placeholder="Password" required autocomplete="new-password"><br>
         <input type="submit" value="Login">
     </form>
 </body>

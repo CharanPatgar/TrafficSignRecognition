@@ -53,6 +53,12 @@ def authenticate():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/logout')
+def logout():
+    response = redirect(url_for('login'))
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
 @app.route('/run-test')
 def run_test():
     subprocess.Popen(["python", "test.py"])  

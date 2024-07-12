@@ -58,8 +58,8 @@ def start_detection():
         img = preprocessing(img)
         cv2.imshow("Processed Image", img)
         img = img.reshape(1, 32, 32, 1)
-        cv2.putText(imgOrignal, "CLASS: ", (20, 35), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.putText(imgOrignal, "PROBABILITY: ", (20, 75), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(imgOrignal, "CLASS: ", (20, 35), font, 0.75, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(imgOrignal, "PROBABILITY: ", (20, 75), font, 0.75, (0, 255, 0), 2, cv2.LINE_AA)
 
         # PREDICT IMAGE
         predictions = model.predict(img)
@@ -67,8 +67,8 @@ def start_detection():
         probabilityValue = np.amax(predictions)
         if probabilityValue > threshold:
             className = getClassName(classIndex)
-            cv2.putText(imgOrignal, f"{classIndex} {className}", (120, 35), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
-            cv2.putText(imgOrignal, f"{round(probabilityValue*100, 2)}%", (180, 75), font, 0.75, (0, 0, 255), 2, cv2.LINE_AA)
+            cv2.putText(imgOrignal, f"{classIndex} {className}", (120, 35), font, 0.75, (0, 255, 0), 2, cv2.LINE_AA)
+            cv2.putText(imgOrignal, f"{round(probabilityValue*100, 2)}%", (180, 75), font, 0.75, (0, 255, 0), 2, cv2.LINE_AA)
         cv2.imshow("Result", imgOrignal)
 
         # Exit the loop if 'q' is pressed

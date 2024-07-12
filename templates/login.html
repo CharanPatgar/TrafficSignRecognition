@@ -33,27 +33,55 @@
             width: 100%;
             box-sizing: border-box;
         }
-        input[type="submit"] {
+        input[type="submit"], button {
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #007bff; /* Blue for Register button */
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 10px; /* Margin to separate the buttons */
+            width: 100%; /* Full width for buttons */
+            box-sizing: border-box;
+            font-size: 16px; /* Font size for buttons */
         }
+        
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #0056b3; /* Darker blue on hover */
         }
+
+        button {
+            background-color: #28a745; /* Green color for Cancel button */
+        }
+        
+        button:hover {
+            background-color: #1e7e34; /* Darker green on hover */
+        }
+        
         .error-message {
             color: red;
             margin-bottom: 10px;
         }
         .register-link {
-            color: #fff;
+            color: #fff; /* Green color */
+            background-color: #28a745; /* Green background */
+            padding: 8px; /* Padding around the link */
+            border-radius: 5px; /* Rounded corners */
             margin-top: 10px;
             display: block;
+            text-decoration: underline; /* Underline the text */
+            text-align: center; /* Center the text */
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
         }
+        .register-link:hover {
+            background-color: #1e7e34; /* Darker yellow on hover */
+            
+        }
+        
     </style>
 </head>
 <body>

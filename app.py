@@ -30,18 +30,6 @@ class_names = pd.read_csv('labels.csv', index_col=0).iloc[:, 0].to_dict()
 images_path = 'images'  
 audio_path = 'static/audio'  
 
-# Mock data for class descriptions and audio files
-class_descriptions = {
-    'stop': 'This is a stop sign. It means you must come to a complete stop.',
-    'yield': 'This is a yield sign. It means you must yield to other traffic.',
-    
-}
-audio_files = {
-    'stop': 'stop.mp3',
-    'yield': 'yield.mp3',
-    
-}
-
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

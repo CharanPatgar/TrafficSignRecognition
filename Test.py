@@ -48,6 +48,10 @@ def start_detection():
     cap.set(4, frameHeight)
     cap.set(10, brightness)
 
+#    cv2.namedWindow("Result", cv2.WND_PROP_FULLSCREEN)
+#    cv2.setWindowProperty("Result", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+
     while True:
         # READ IMAGE
         success, imgOrignal = cap.read()
